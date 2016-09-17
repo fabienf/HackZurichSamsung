@@ -46,20 +46,20 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/category_feedback">
-        <CheckBoxPreference
-            android:key="pref_monitoringJob"
-            android:title="@string/pref_monitoring_job"
-            android:defaultValue="true" />
-        <CheckBoxPreference
-            android:key="pref_showJobProgress"
-            android:title="@string/pref_show_job_progress"
-            android:defaultValue="true" />
-        <CheckBoxPreference
-            android:key="pref_showSettings"
-            android:title="@string/pref_show_settings"
-            android:defaultValue="false" />
-    </PreferenceCategory>
+    <!--<PreferenceCategory-->
+        <!--android:title="@string/category_feedback">-->
+        <!--<CheckBoxPreference-->
+            <!--android:key="pref_monitoringJob"-->
+            <!--android:title="@string/pref_monitoring_job"-->
+            <!--android:defaultValue="true" />-->
+        <!--<CheckBoxPreference-->
+            <!--android:key="pref_showJobProgress"-->
+            <!--android:title="@string/pref_show_job_progress"-->
+            <!--android:defaultValue="true" />-->
+        <!--<CheckBoxPreference-->
+            <!--android:key="pref_showSettings"-->
+            <!--android:title="@string/pref_show_settings"-->
+            <!--android:defaultValue="false" />-->
+    <!--</PreferenceCategory>-->
 
 </PreferenceScreen>

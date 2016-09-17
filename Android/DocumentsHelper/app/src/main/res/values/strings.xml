@@ -14,7 +14,7 @@
     <string name="pref_monitoring_job">Monitoring Job</string>
     <string name="category_attrs">Print Attributes</string>
     <string name="category_feedback">Feedback</string>
-    <string name="pref_filename">File Name (without path)</string>
+    <string name="pref_filename">File to Print</string>
     <string name="pref_autoFit">Auto Fit</string>
     <string name="sdk_support_missing">Please install / update SmartUX SDK Services App to proceed</string>
     <string name="unknown_error">Unexpected error:</string>

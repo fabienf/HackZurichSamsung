@@ -6,6 +6,7 @@ Required REST:
 
   ```javascript
   {
+    "id":"1",
     "file":"terms_and_conditions.pdf",
     "type":"manual",
     "parts":
@@ -37,3 +38,14 @@ Required REST:
     ]
   }
   ```
+  
+2. Print request
+  * Request:
+  ```javascript
+  {
+    "id":"1",
+    "pages":"1,3,5-9"
+  }
+    ```
+  * Response:
+  File for downloading, which will be printed

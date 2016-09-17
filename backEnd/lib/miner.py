@@ -1,4 +1,3 @@
-
 import sys
 import json
 import re
@@ -81,7 +80,7 @@ class Miner:
                 if from_page > to_page:
                     raise Exception('Wrong range format!')
 
-                for i in xrange(from_page, to_page+1):
+                for i in xrange(from_page, to_page + 1):
                     p = infile.getPage(i)
                     outfile.addPage(p)
 
@@ -110,4 +109,5 @@ if __name__ == "__main__":
 
     # test
     from IPython import embed
+
     embed()

@@ -29,15 +29,24 @@ class DropboxUpdate:
                 newFileMeta = entry
                 print(newFileMeta.path_lower)
                 newFile = dbx.files_download_to_file('tmp/'+newFileMeta.name,newFileMeta.path_lower)
-                DropboxUpdate.classify_file('tmp/'+newFileMeta.name)
+                DropboxUpdate.classify_file(dbx,'tmp/'+newFileMeta.name,newFileMeta.name)
                 
     @staticmethod
-    def classify_file(file_path):
+    def classify_file(dbx,file_path,file_name):
         text = Miner.get_text(file_path)
-        keywords = DU.get_full_keywords_for_text(text)
+        #keywords = DU.get_full_keywords_for_text(text)
         taxonomy = DU.get_single_best_taxonomy_for_text(text)
-        print keywords
+        #print keywords
         print taxonomy
+        folder_names = {'/law, govt and politics' : 'Law Govt and Politics', '/science' : 'Science', '/business and industrial' : 'Business and Industrial'}
+        print folder_names[taxonomy]
+        #try to create a folder
+        try:
+            dbx.files_create_folder('/'+folder_names[taxonomy])
+        except :
+            pass
+        dbx.files_move('/'+file_name,'/'+folder_names[taxonomy]+'/'+file_name)
+        print "File moved sucesfully"
 
 
 DropboxUpdate.cluster_all_files()

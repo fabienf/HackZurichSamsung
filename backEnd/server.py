@@ -17,7 +17,7 @@ json_file = [{'content': ' Samsung is not liable for performance issues or incom
 
 
 stored_files = {
-    'test': 'tmp/HamesIM.pdf'
+    'test': './tmp/HamesIM.pdf'
 }
 
 

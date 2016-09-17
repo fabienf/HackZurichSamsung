@@ -2,34 +2,49 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:orientation="vertical">
+              android:orientation="vertical"
+              android:padding="5dp"
+                >
 
     <CheckBox
         android:id="@+id/item_part_name_checkmark"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="3dp"
         android:textSize="20sp"
+        android:maxLines="2"
+        android:ellipsize="end"
         />
 
     <TextView
         android:id="@+id/item_part_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        />
-
-    <TextView
-        android:id="@+id/item_part_pages"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
+        android:textSize="17sp"
+        android:paddingLeft="10dp"
+        android:maxLines="3"
         />
 
     <TextView
         android:id="@+id/item_part_keywords"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
+        android:textSize="14sp"
+        android:paddingLeft="10dp"
+        android:textStyle="italic"
+        android:textColor="@color/secondary_text_light"
+        android:maxLines="2"
         />
+
+    <TextView
+        android:id="@+id/item_part_pages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:paddingLeft="10dp"
+        android:paddingTop="3dp"
+        />
+
+
 
 </LinearLayout>

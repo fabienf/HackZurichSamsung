@@ -13,6 +13,7 @@
 
     <Button
         android:id="@+id/pickFileBtn"
+        style="@style/AppTheme.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/go_to_print"

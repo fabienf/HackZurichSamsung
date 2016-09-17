@@ -3,7 +3,7 @@ from lib.pdf import PDF
 from lib.miner import Miner
 
 from DocumentUnderstanding import DocumentUnderstanding as DU
-import json
+import pickle
 import os
 import uuid
 import pprint
@@ -84,8 +84,8 @@ def upload_file():
             file_uuid=file_uuid
         ))
     else:
-        with open('./test/test.json', 'r') as f:
-            json_file = json.load(f)
+        with open('./test/test.pickle', 'rb') as f:
+            json_file = pickle.load(f)
             return jsonify(process_file_data(
                 file_name=file_path,
                 file_data=json_file,

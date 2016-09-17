@@ -74,11 +74,13 @@ public class MainActivity extends AppCompatActivity {
                                 public void call(Document document) {
                                     // TODO Save document response here
                                     // TODO Proceed further
+                                    Toast.makeText(MainActivity.this, "Complete", Toast.LENGTH_SHORT).show();
                                 }
                             }, new Action1<Throwable>() {
                                 @Override
                                 public void call(Throwable throwable) {
                                     // TODO Handle error
+                                    Toast.makeText(MainActivity.this, "Fail: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             });
 
@@ -90,20 +92,15 @@ public class MainActivity extends AppCompatActivity {
 
     private Observable<Document> uploadFile(Uri fileUri) {
 
-        File file = new File(fileUri.toString());
+        File file = new File(fileUri.getPath());
 
         MediaType mediaType = MediaType.parse("multipart/form-data");
         RequestBody requestFile = RequestBody.create(mediaType, file);
 
         MultipartBody.Part body =
-                MultipartBody.Part.createFormData("filename", file.getName(), requestFile);
-
-        String descriptionString = "file to print";
-        RequestBody description =
-                RequestBody.create(
-                        MediaType.parse("multipart/form-data"), descriptionString);
+                MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
         // do upload
-        return ServiceClient.getInstance().getServiceApi().upload(description, body);
+        return ServiceClient.getInstance().getServiceApi().upload(body);
     }
 }

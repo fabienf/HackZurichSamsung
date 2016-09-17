@@ -17,7 +17,6 @@ public interface ServiceApi {
 
     @Multipart
     @POST("/upload")
-    Observable<Document> upload(@Part("description") RequestBody description,
-                                @Part MultipartBody.Part file);
+    Observable<Document> upload(@Part MultipartBody.Part file);
 
 }

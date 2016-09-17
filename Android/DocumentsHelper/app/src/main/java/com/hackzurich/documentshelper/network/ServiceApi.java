@@ -22,7 +22,7 @@ public interface ServiceApi {
     @POST("/upload")
     Observable<Document> upload(@Part MultipartBody.Part file);
 
-    @POST("/generate")
+    @POST("/range")
     @Streaming
     Observable<ResponseBody> generate(@Body GenerateRequest request);
 

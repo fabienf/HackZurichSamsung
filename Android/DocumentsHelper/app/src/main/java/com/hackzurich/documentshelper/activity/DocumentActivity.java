@@ -3,6 +3,7 @@ package com.hackzurich.documentshelper.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -96,12 +97,12 @@ public class DocumentActivity extends AppCompatActivity {
     private void generateDocument() {
         mProgressDialog = ProgressDialog.show(this, "", getString(R.string.generate_file_loading));
 
-        List<String> parts = new ArrayList<>();
+        List<List<Integer>> pages = new ArrayList<>();
         for (Part part : mSelectedForPrinting) {
-            parts.add(part.getId());
+            pages.add(part.getPages());
         }
 
-        GenerateRequest request = new GenerateRequest(mActiveDocument.getId(), parts);
+        GenerateRequest request = new GenerateRequest(mActiveDocument.getId(), pages);
         ServiceApi serviceApi = ServiceClient.getInstance().getServiceApi();
         serviceApi.generate(request)
                 .subscribeOn(Schedulers.newThread())
@@ -131,7 +132,14 @@ public class DocumentActivity extends AppCompatActivity {
 
     private boolean writeResponseBodyToDisk(ResponseBody body) {
         try {
-            File fileToPrint = new File(getFilesDir(), FILENAME);
+            File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+
+            File folder = new File(path.getPath() + "/toPrint");
+            if (!folder.exists()) {
+                folder.mkdir();
+            }
+
+            File file = new File(folder.getPath() + "/" + FILENAME);
 
             InputStream inputStream = null;
             OutputStream outputStream = null;
@@ -143,7 +151,7 @@ public class DocumentActivity extends AppCompatActivity {
                 long fileSizeDownloaded = 0;
 
                 inputStream = body.byteStream();
-                outputStream = new FileOutputStream(fileToPrint);
+                outputStream = new FileOutputStream(file);
 
                 while (true) {
                     int read = inputStream.read(fileReader);
@@ -161,7 +169,7 @@ public class DocumentActivity extends AppCompatActivity {
 
                 outputStream.flush();
 
-                handleDocumentDownloaded(fileToPrint.getAbsolutePath());
+                handleDocumentDownloaded(file.getAbsolutePath());
                 return true;
             } catch (IOException e) {
                 Toast.makeText(DocumentActivity.this,

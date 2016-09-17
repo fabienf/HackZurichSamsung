@@ -3,6 +3,7 @@ package com.hackzurich.documentshelper.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +42,13 @@ public class DocumentListAdapter extends RecyclerView.Adapter<DocumentListAdapte
         final Part current = mParts.get(position);
 
         holder.mNameCheckbox.setText(current.getName());
-        holder.mDescription.setText(current.getDescription());
+
+        if(TextUtils.isEmpty(current.getDescription())) {
+            holder.mDescription.setVisibility(View.GONE);
+        } else {
+            holder.mDescription.setVisibility(View.VISIBLE);
+            holder.mDescription.setText(current.getDescription());
+        }
 
         int start = current.getPages().get(0);
         int end = current.getPages().get(1);

@@ -53,7 +53,7 @@ class PDF:
         outputs = Miner.get_pages(pdf_path=self.filename, pagenums=pagenums)
 
         for t in range(len(new_toc)):
-            clean_output = re.sub('[^A-Za-z0-9]+', ' ', outputs[t])
+            clean_output = re.sub('[^A-Za-z0-9.,?!]+', ' ', outputs[t])
             new_toc[t]['content'] = clean_output
 
         return new_toc

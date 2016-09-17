@@ -61,7 +61,7 @@ class Miner:
             raise Exception('No text to search!')
 
         text = text[0]
-        clean_text = re.sub('[^A-Za-z0-9]+', ' ', text)
+        clean_text = re.sub('[^A-Za-z0-9.,?!]+', ' ', text)
         return clean_text
 
 

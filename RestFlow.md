@@ -48,7 +48,11 @@ Required REST:
   ```javascript
   {
     "id":"1",
-    "parts":["2","4"]
+    "pages":
+    [
+      [1,5],
+      [19,40]
+    ]
   }
     ```
   * Response:

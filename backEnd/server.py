@@ -16,41 +16,40 @@ json_file = ''
 
 @app.route('/', methods=['GET'])
 def hello_world():
+    filename = './test/data/tablet.pdf'
+    pdf = PDF(filename)
+    result = pdf.get_summarised_data()
+    pretty_text = pp.pformat(result)
+    return (pretty_text)
 
-	filename = './test/data/tablet.pdf'
-	pdf = PDF(filename)
-	result = pdf.get_summarised_data()
-	pretty_text = pp.pformat(result)
-	return (pretty_text)
 
 def save_file():
-	if 'file' not in request.files:
-		print('No file part')
-		return 'No file part'
-	file = request.files['file']
+    if 'file' not in request.files:
+        print('No file part')
+        return 'No file part'
+    file = request.files['file']
 
-	# if user does not select file, browser also
-	# submit a empty part without filename
-	if file.filename == '':
-		print('No selected file')
-		return 'No selected file'
-	print(file.filename)
-	file.save(file.filename)
-	return None
+    # if user does not select file, browser also
+    # submit a empty part without filename
+    if file.filename == '':
+        print('No selected file')
+        return 'No selected file'
+    print(file.filename)
+    file.save(file.filename)
+    return None
 
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
-	# save file to the disk if it exists, otherwise return error
-	save_success = save_file()
-	if save_success:
-		return save_success
+    # save file to the disk if it exists, otherwise return error
+    save_success = save_file()
+    if save_success:
+        return save_success
 
-	with open('return_data.json') as data_file:
-		data = json.load(data_file)
-	return jsonify(data)
-
+    with open('return_data.json') as data_file:
+        data = json.load(data_file)
+    return jsonify(data)
 
 
 if __name__ == '__main__':
-	app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port)

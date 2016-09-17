@@ -324,8 +324,12 @@ public final class PrintActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_print);
 
+        String filePath = getIntent().getStringExtra(DocumentActivity.FILEPATH_KEY);
+
         mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         mObserver = new PrintObserver(new Handler());
+
+        mPrefs.edit().putString(PrintConfigureFragment.PREF_FILENAME, filePath).apply();
 
         // Set listener for Print execution
         findViewById(R.id.printButton).setOnClickListener(new View.OnClickListener() {

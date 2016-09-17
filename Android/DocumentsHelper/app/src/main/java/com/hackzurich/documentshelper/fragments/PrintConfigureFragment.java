@@ -55,7 +55,7 @@ public final class PrintConfigureFragment extends PreferenceFragment implements 
         mCopiesPref = ((EditTextIntegerPreference) findPreference(PREF_COPIES));
         mCopiesPref.setLimits(1, 1);
         // Clear text prefs
-        ((EditTextPreference) findPreference(PREF_FILENAME)).setText("");
+        // ((EditTextPreference) findPreference(PREF_FILENAME)).setText("");
     }
 
     @Override

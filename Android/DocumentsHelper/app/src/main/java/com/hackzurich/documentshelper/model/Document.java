@@ -9,6 +9,9 @@ import java.util.List;
  */
 public class Document {
 
+    @SerializedName("id")
+    private String mId;
+
     @SerializedName("file")
     private String mFile;
 
@@ -28,5 +31,9 @@ public class Document {
 
     public List<Part> getParts() {
         return mParts;
+    }
+
+    public String getId() {
+        return mId;
     }
 }

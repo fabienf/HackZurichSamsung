@@ -15,12 +15,17 @@ json_file = ''
 
 @app.route('/')
 def hello_world():
-	print(sys.version)
-	print('Hello World! I am running on port ' + str(port))
-
 	tx = PDF.get_text()
 	text = pp.pformat(tx)
-	return (text)
+
+	    print(sys.version)
+    print('Hello World! I am running on port ' + str(port))
+
+    filename = './test/data/tablet.pdf'
+    pdf = PDF(filename)
+    result = pdf.get_summarised_data()
+    pretty_text = pp.pformat(result)
+    return (pretty_text)
 
 def save_file():
 	if 'file' not in request.files:
@@ -36,6 +41,9 @@ def save_file():
 	print(file.filename)
 	file.save(file.filename)
 	return None
+
+
+
 
 @app.route('/upload', methods=['POST'])
 def upload_file():

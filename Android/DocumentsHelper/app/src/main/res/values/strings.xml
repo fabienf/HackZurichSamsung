@@ -14,7 +14,7 @@
     <string name="pref_monitoring_job">Monitoring Job</string>
     <string name="category_attrs">Print Attributes</string>
     <string name="category_feedback">Feedback</string>
-    <string name="pref_filename">File Name (without path)</string>
+    <string name="pref_filename">File to Print</string>
     <string name="pref_autoFit">Auto Fit</string>
     <string name="sdk_support_missing">Please install / update SmartUX SDK Services App to proceed</string>
     <string name="unknown_error">Unexpected error:</string>
@@ -27,4 +27,9 @@
     <string name="print_not_supported">Print is not supported on this device.</string>
     <string name="pref_show_job_progress">Show Job Progress</string>
     <string name="go_to_print">Pick file...</string>
+    <string name="upload_file_progress">Uploading file...</string>
+    <string name="item_parts_pages">From page %1$s to page %2$s</string>
+    <string name="documents_activity_print">Print</string>
+    <string name="generate_file_loading">Generate file...</string>
+    <string name="file_download_failed">File download failed:</string>
 </resources>

@@ -28,16 +28,18 @@ def hello_world():
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
-	#check for file
+    #check for file
 	if 'file' not in request.files:
 		print('No file part')
 		return redirect(request.url)
 	file = request.files['file']
+
 	# if user does not select file, browser also
 	# submit a empty part without filename
 	if file.filename == '':
 		print('No selected file')
 		return redirect(request.url)
+
 	print(file.filename)
 	file.save(file.filename)
 	with open('return_data.json') as data_file:    

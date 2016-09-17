@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.OpenableColumns;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.hackzurich.documentshelper.model.Document;
 import com.hackzurich.documentshelper.network.ServiceClient;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -51,10 +53,7 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showFileChooser();
-
-//                Intent intent = new Intent(MainActivity.this, PrintActivity.class);
-//                startActivity(intent);
+               showFileChooser();
             }
         });
     }
@@ -140,10 +139,15 @@ public class MainActivity extends AppCompatActivity {
         try {
             inputStream = getContentResolver().openInputStream(uri);
 
-            // write the inputStream to a FileOutputStream
-            file = new File(getFilesDir(), filename);
+            File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 
-            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+            File folder = new File(path.getPath() + "/toPrint");
+            if (!folder.exists()) {
+                folder.mkdir();
+            }
+
+            file = new File(folder.getPath() + "/" + filename);
+            outputStream = new FileOutputStream(file);
 
             int read = 0;
             byte[] bytes = new byte[1024];

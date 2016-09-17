@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -58,6 +59,8 @@ public class DocumentActivity extends AppCompatActivity {
         Gson gson = new Gson();
         mActiveDocument = gson.fromJson(document, Document.class);
 
+        setTitle(mActiveDocument.getFile());
+
         final Button printButton = (Button) findViewById(R.id.documents_activity_print_btn);
         printButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +68,7 @@ public class DocumentActivity extends AppCompatActivity {
                 generateDocument();
             }
         });
+        printButton.setEnabled(false);
 
         mPartsList = (RecyclerView) findViewById(R.id.documents_activity_parts_list);
         mPartsList.setHasFixedSize(true);

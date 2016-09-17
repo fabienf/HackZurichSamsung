@@ -3,11 +3,13 @@ package com.hackzurich.documentshelper.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 
 import com.hackzurich.documentshelper.R;
 import com.sec.android.ngen.common.lib.ssp.printer.PrintAttributes.AutoFit;
@@ -55,7 +57,15 @@ public final class PrintConfigureFragment extends PreferenceFragment implements 
         mCopiesPref = ((EditTextIntegerPreference) findPreference(PREF_COPIES));
         mCopiesPref.setLimits(1, 1);
         // Clear text prefs
-        // ((EditTextPreference) findPreference(PREF_FILENAME)).setText("");
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        ((EditTextPreference) findPreference(PREF_FILENAME)).setText(prefs.getString(PrintConfigureFragment.PREF_FILENAME, ""));
+
     }
 
     @Override

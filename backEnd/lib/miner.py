@@ -85,10 +85,11 @@ class Miner:
                     p = infile.getPage(i)
                     outfile.addPage(p)
 
-            with open('./tmp/output.pdf', 'wb') as fw:
+            directory_path, file_name = './tmp/', 'output.pdf'
+            with open(directory_path + file_name, 'wb') as fw:
                 outfile.write(fw)
 
-            return infile
+            return directory_path, file_name
 
 
 if __name__ == "__main__":

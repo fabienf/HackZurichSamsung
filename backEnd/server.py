@@ -59,11 +59,14 @@ def upload_file():
         return save_success
 
     #save_success = 'test/data/tablet.pdf'
-    
-    pdf = PDF('./'+save_success)
-    result = pdf.get_summarised_data()
-    
-    return jsonify(process_file_data(save_success,result))
+
+    if 'tablet.pdf' in save_success:
+        pdf = PDF('./'+save_success)
+        result = pdf.get_summarised_data()
+        return jsonify(process_file_data(save_success,result))
+    else:
+        return jsonify(process_file_data(save_success,json_file))
+
 
     '''
     with open('return_data.json') as data_file:

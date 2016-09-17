@@ -9,6 +9,8 @@ import java.util.List;
  */
 public class Part {
 
+    @SerializedName("id")
+    private String mId;
 
     @SerializedName("name")
     private String mName;
@@ -36,5 +38,9 @@ public class Part {
 
     public List<String> getKeys() {
         return mKeys;
+    }
+
+    public String getId() {
+        return mId;
     }
 }

@@ -11,6 +11,8 @@ from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
 
+from PyPDF2 import PdfFileWriter, PdfFileReader
+
 
 class Miner:
     @staticmethod
@@ -64,6 +66,30 @@ class Miner:
         clean_text = re.sub('[^A-Za-z0-9]+', ' ', text)
         return clean_text
 
+    @staticmethod
+    def extract_pages(pdf_path, ranges=None):
+        if not ranges:
+            raise Exception('No page range specified!')
+
+        with open(pdf_path, 'rb') as f:
+            infile = PdfFileReader(f)
+
+            outfile = PdfFileWriter()
+            for range in ranges:
+                from_page = int(range[0])
+                to_page = int(range[1])
+                if from_page > to_page:
+                    raise Exception('Wrong range format!')
+
+                for i in xrange(from_page, to_page+1):
+                    p = infile.getPage(i)
+                    outfile.addPage(p)
+
+            with open('./tmp/output.pdf', 'wb') as fw:
+                outfile.write(fw)
+
+            return infile
+
 
 if __name__ == "__main__":
     '''TESTING'''
@@ -74,8 +100,12 @@ if __name__ == "__main__":
     # with open('./lib/output.json', 'w') as f:
     #     json.dump(toc, f)
 
-    text = Miner.get_text(sys.argv[1])
-    print(text)
+    # test: extract pages
+    # ranges = [
+    #     [1,5],
+    #     [19,40]
+    # ]
+    # text = Miner.extract_pages(sys.argv[1], ranges)
 
     # test
     from IPython import embed

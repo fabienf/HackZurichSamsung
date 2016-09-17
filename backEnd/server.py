@@ -5,7 +5,7 @@ from lib.miner import Miner
 from DocumentUnderstanding import DocumentUnderstanding as DU
 import json
 import os
-import sys
+import uuid
 import pprint
 
 app = Flask(__name__)
@@ -41,15 +41,15 @@ def save_file():
         return 'No selected file'
 
     file_path = './tmp/' + file.filename
-    file_id = 'test'
-    stored_files[file_id] = file_path
+    file_uuid = str(uuid.uuid4())
+    stored_files[file_uuid] = file_path
 
     print(file_path)
     file.save(file_path)
-    return file_path
+    return file_path, file_uuid
 
 
-def process_file_data(file_name, file_data):
+def process_file_data(file_name, file_data, file_uuid):
     data_out_parts = []
     for chapter in file_data:
         keywords = DU.get_full_keywords_for_text(chapter['content'])
@@ -58,26 +58,39 @@ def process_file_data(file_name, file_data):
         line = {'name': chapter['title'], 'description': summary, 'keys': keywords, 'pages': pages}
         data_out_parts.append(line)
         print(line)
-    return {'file': file_name, 'parts': data_out_parts}
+
+    return {
+        'id': file_uuid,
+        'file': file_name,
+        'parts': data_out_parts
+    }
 
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
     # save file to the disk if it exists, otherwise return error
-    save_success = save_file()
-    if ('No file part' or 'No selected file') in save_success:
-        return save_success
+    file_path, file_uuid = save_file()
+    if ('No file part' or 'No selected file') in file_path:
+        return file_path
 
-    # save_success = 'test/data/tablet.pdf'
+    # file_path = 'test/data/tablet.pdf'
 
-    if 'tablet.pdf' in save_success:
-        pdf = PDF('./' + save_success)
+    if 'tablet.pdf' in file_path:
+        pdf = PDF('./' + file_path)
         result = pdf.get_summarised_data()
-        return jsonify(process_file_data(save_success, result))
+        return jsonify(process_file_data(
+            file_name=file_path,
+            file_data=result,
+            file_uuid=file_uuid
+        ))
     else:
         with open('./test/test.json', 'r') as f:
             json_file = json.load(f)
-            return jsonify(process_file_data(save_success, json_file))
+            return jsonify(process_file_data(
+                file_name=file_path,
+                file_data=json_file,
+                file_uuid=file_uuid
+            ))
 
 
             # with open('return_data.json') as data_file:

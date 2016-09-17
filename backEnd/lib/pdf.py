@@ -5,10 +5,8 @@ import json
 
 class PDF:
 
-    def __init__(self):
-        pass
-
-    def get_text(self):
+    @staticmethod
+    def get_text():
         import os
         print(os.getcwd())
         args = ['python2', './lib/miner.py']

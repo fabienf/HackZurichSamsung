@@ -53,7 +53,7 @@ import com.sec.android.ngen.common.lib.ssp.printer.PrintletAttributes;
  * </ol>
  */
 public final class PrintActivity extends AppCompatActivity {
-    private static final String TAG = "PrintSampleActivity";
+    private static final String TAG = "DocumentHelper";
 
     public static final String ACTION_PRINT_COMPLETED = "com.sec.android.ssp.sample.print.ACTION_PRINT_COMPLETED";
 

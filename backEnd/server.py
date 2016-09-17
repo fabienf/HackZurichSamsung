@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, url_for, json, render_template, jsonify
+from flask import Flask, request, redirect, url_for, json, render_template, jsonify, send_from_directory
 from lib.pdf import PDF
 
 from DocumentUnderstanding import DocumentUnderstanding as DU
@@ -22,8 +22,8 @@ def hello_world():
     pdf = PDF(filename)
     result = pdf.get_summarised_data()
     pretty_text = pp.pformat(result)
-    return (pretty_text)
-
+    #return (pretty_text)
+    return send_from_directory(directory='tmp', filename='HamesIM.pdf')
 
 def save_file():
     if 'file' not in request.files:

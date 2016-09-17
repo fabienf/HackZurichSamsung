@@ -1,29 +1,37 @@
 import dropbox
+import DocumentUnderstanding as DU
 
 
-class DropboxUpdate
+class DropboxUpdate:
 
-dbx = dropbox.Dropbox('F2_PGWfw-GAAAAAAAAAACqNZoyJNzdLMd7x-BKLsGSE7hHM07KRMfT6jJgtWLgub')
+	@staticmethod
+	def cluster_all_files():
+		#sign in
+		dbx = dropbox.Dropbox('F2_PGWfw-GAAAAAAAAAACqNZoyJNzdLMd7x-BKLsGSE7hHM07KRMfT6jJgtWLgub')
+		#debug info
+		#print dbx.users_get_current_account()
 
-
-print dbx.users_get_current_account()
-
-try:
-	dbx.files_create_folder('/dog')
-except :
-    pass
-dbx.files_move('/HamesIM.pdf','/dog/HamesIM.pdf')
-
-
-newFileMeta = None
-
-for entry in dbx.files_list_folder('').entries:
-    print(entry.name)
-    if '.pdf' in entry.name:
-    	newFileMeta = entry
-    	break
+		#
+		try:
+			dbx.files_create_folder('/dog')
+		except :
+		    pass
+		#dbx.files_move('/HamesIM.pdf','/dog/HamesIM.pdf')
 
 
+		newFileMeta = None
 
-print(newFileMeta.path_lower)
-newFile = dbx.files_download(newFileMeta.path_lower)
+		for entry in dbx.files_list_folder('').entries:
+		    print(entry.name)
+		    if '.pdf' in entry.name:
+		    	newFileMeta = entry
+		    	break
+
+		print(newFileMeta.path_lower)
+		newFile = dbx.files_download_to_file('tmp/'+newFileMeta.name,newFileMeta.path_lower)
+		print newFile
+
+
+DropboxUpdate.cluster_all_files()
+
+

@@ -1,9 +1,12 @@
 package com.hackzurich.documentshelper.activity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.OpenableColumns;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String FILENAME = "fileToPrint";
 
     private static final int FILE_SELECT_CODE = 1;
+
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +76,9 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case FILE_SELECT_CODE:
                 if (resultCode == RESULT_OK) {
+
+                    mProgressDialog = ProgressDialog.show(this, "", getString(R.string.upload_file_progress));
+
                     // Get the Uri of the selected file
                     Uri uri = data.getData();
 
@@ -81,13 +89,14 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void call(Document document) {
                                     // TODO Save document response here
-                                    // TODO Proceed further
-                                    Toast.makeText(MainActivity.this, "Complete", Toast.LENGTH_SHORT).show();
+                                    mProgressDialog.dismiss();
+
+                                    startActivity(new Intent(MainActivity.this, PrintActivity.class));
                                 }
                             }, new Action1<Throwable>() {
                                 @Override
                                 public void call(Throwable throwable) {
-                                    // TODO Handle error
+                                    mProgressDialog.dismiss();
                                     Toast.makeText(MainActivity.this, "Fail: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -113,20 +122,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private File readFile(Uri uri) {
+
+        String filename = getDisplayName(uri);
+
         InputStream inputStream = null;
         OutputStream outputStream = null;
         File file = null;
         try {
-            // read this file into InputStream
-//            inputStream = new FileInputStream(uri);
-
             inputStream = getContentResolver().openInputStream(uri);
 
             // write the inputStream to a FileOutputStream
-            file = new File(getFilesDir(), FILENAME);
-//            outputStream = new FileOutputStream(file);
+            file = new File(getFilesDir(), filename);
 
-            outputStream = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
 
             int read = 0;
             byte[] bytes = new byte[1024];
@@ -158,5 +166,25 @@ public class MainActivity extends AppCompatActivity {
         return file;
     }
 
+    private String getDisplayName(Uri uri) {
+        String displayName = FILENAME;
+        if (uri.toString().startsWith("content://")) {
+            Cursor cursor = null;
+            try {
+                cursor = getContentResolver().query(uri, null, null, null, null);
+                if (cursor != null && cursor.moveToFirst()) {
+                    displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                if(cursor != null) {
+                    cursor.close();
+                }
+            }
+        } else if (uri.toString().startsWith("file://")) {
+            File myFile = new File(uri.toString());
+            displayName = myFile.getName();
+        }
+        return displayName;
+    }
 
 }

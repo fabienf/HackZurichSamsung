@@ -24,8 +24,9 @@ def hello_world():
     pdf = PDF(filename)
     result = pdf.get_summarised_data()
     pretty_text = pp.pformat(result)
-    #return (pretty_text)
+    # return (pretty_text)
     return send_from_directory(directory='tmp', filename='HamesIM.pdf')
+
 
 def save_file():
     if 'file' not in request.files:
@@ -47,16 +48,18 @@ def save_file():
     file.save(file_path)
     return file_path
 
+
 def process_file_data(file_name, file_data):
     data_out_parts = []
     for chapter in file_data:
         keywords = DU.get_full_keywords_for_text(chapter['content'])
         summary = DU.get_summary_for_text(chapter['content'])
-        pages = [chapter['range']['from'],chapter['range']['to']]
-        line = {'name' : chapter['title'], 'description' : summary, 'keys' : keywords, 'pages' : pages}
+        pages = [chapter['range']['from'], chapter['range']['to']]
+        line = {'name': chapter['title'], 'description': summary, 'keys': keywords, 'pages': pages}
         data_out_parts.append(line)
         print(line)
-    return {'file' : file_name, 'parts' : data_out_parts}
+    return {'file': file_name, 'parts': data_out_parts}
+
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -65,21 +68,22 @@ def upload_file():
     if ('No file part' or 'No selected file') in save_success:
         return save_success
 
-    #save_success = 'test/data/tablet.pdf'
+    # save_success = 'test/data/tablet.pdf'
 
     if 'tablet.pdf' in save_success:
-        pdf = PDF('./'+save_success)
+        pdf = PDF('./' + save_success)
         result = pdf.get_summarised_data()
-        return jsonify(process_file_data(save_success,result))
+        return jsonify(process_file_data(save_success, result))
     else:
         with open('./test/test.json', 'r') as f:
             json_file = json.load(f)
-            return jsonify(process_file_data(save_success,json_file))
+            return jsonify(process_file_data(save_success, json_file))
 
 
-    # with open('return_data.json') as data_file:
-    #     data = json.load(data_file)
-    # return jsonify(data)
+            # with open('return_data.json') as data_file:
+            #     data = json.load(data_file)
+            # return jsonify(data)
+
 
 @app.route('/range', methods=['POST'])
 def split_file():
@@ -99,11 +103,5 @@ def split_file():
     return send_from_directory(directory=directory_path, filename=file_name)
 
 
-
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)
-
-
-
-
-

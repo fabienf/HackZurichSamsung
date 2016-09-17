@@ -16,7 +16,7 @@ def get_toc(pdf_path):
     return toc
 
 if __name__ == "__main__":
-    filename = 'test/data/hpstone.pdf'
+    filename = './test/data/hpstone.pdf'
     text = get_toc(filename)
-    with open('lib/output.json', 'w') as f:
+    with open('./lib/output.json', 'w') as f:
         json.dump(text, f)

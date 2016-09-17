@@ -1,5 +1,7 @@
-import json
+
 import sys
+import json
+import re
 
 from cStringIO import StringIO
 from pdfminer.pdfparser import PDFParser
@@ -47,20 +49,34 @@ class Miner:
             output.reset()
         infile.close()
         converter.close()
-        output.close
+        output.close()
 
         return texts
 
+    @staticmethod
+    def get_text(pdf_path):
+        pagenums = [set()]
+        text = Miner.get_pages(pdf_path, pagenums)
+        if not len(text):
+            raise Exception('No text to search!')
+
+        text = text[0]
+        clean_text = re.sub('[^A-Za-z0-9]+', ' ', text)
+        return clean_text
+
 
 if __name__ == "__main__":
+    '''TESTING'''
     if len(sys.argv) is not 2:
         raise Exception('Invalid number of parameters')
 
-    toc, parser, document, infile = Miner.get_toc(sys.argv[1])
-    with open('./lib/output.json', 'w') as f:
-        json.dump(toc, f)
+    # toc, parser, document, infile = Miner.get_toc(sys.argv[1])
+    # with open('./lib/output.json', 'w') as f:
+    #     json.dump(toc, f)
+
+    text = Miner.get_text(sys.argv[1])
+    print(text)
 
     # test
     from IPython import embed
-
     embed()

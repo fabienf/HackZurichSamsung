@@ -10,7 +10,7 @@
             android:dialogTitle="@string/pref_filename"
             android:inputType="textNoSuggestions"/>
         
-        <com.sec.android.ssp.sample.print.fragments.EditTextIntegerPreference
+        <com.hackzurich.documentshelper.fragments.EditTextIntegerPreference
             android:key="pref_copies"
             android:title="@string/pref_copies"
             android:defaultValue="1"

@@ -322,7 +322,7 @@ public final class PrintActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_print);
 
         mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         mObserver = new PrintObserver(new Handler());

@@ -1,5 +1,6 @@
 package com.hackzurich.documentshelper.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +14,11 @@ import com.hackzurich.documentshelper.model.Document;
 import com.hackzurich.documentshelper.network.ServiceClient;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -25,6 +31,8 @@ import rx.schedulers.Schedulers;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "DocumentHelper";
+
+    private static final String FILENAME = "fileToPrint";
 
     private static final int FILE_SELECT_CODE = 1;
 
@@ -92,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Observable<Document> uploadFile(Uri fileUri) {
 
-        File file = new File(fileUri.getPath());
+        File file = readFile(fileUri);
 
         MediaType mediaType = MediaType.parse("multipart/form-data");
         RequestBody requestFile = RequestBody.create(mediaType, file);
@@ -103,4 +111,52 @@ public class MainActivity extends AppCompatActivity {
         // do upload
         return ServiceClient.getInstance().getServiceApi().upload(body);
     }
+
+    private File readFile(Uri uri) {
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+        File file = null;
+        try {
+            // read this file into InputStream
+//            inputStream = new FileInputStream(uri);
+
+            inputStream = getContentResolver().openInputStream(uri);
+
+            // write the inputStream to a FileOutputStream
+            file = new File(getFilesDir(), FILENAME);
+//            outputStream = new FileOutputStream(file);
+
+            outputStream = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+
+            int read = 0;
+            byte[] bytes = new byte[1024];
+
+            while ((read = inputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, read);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (outputStream != null) {
+                try {
+                    // outputStream.flush();
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+        return file;
+    }
+
+
 }

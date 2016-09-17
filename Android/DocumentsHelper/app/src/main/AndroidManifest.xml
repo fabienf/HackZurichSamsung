@@ -3,8 +3,8 @@
           package="com.hackzurich.documentshelper">
 
     <!-- For accessing files for print -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name="android.support.multidex.MultiDexApplication"
@@ -20,15 +20,17 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity android:name=".activity.PrintActivity"/>
 
         <!-- Exported to receive Print Job completion broadcast -->
-        <receiver android:name="JobCompleteReceiver">
+        <receiver android:name=".JobCompleteReceiver">
             <intent-filter>
                 <action android:name="com.sec.android.ssp.sample.print.ACTION_PRINT_COMPLETED"/>
             </intent-filter>
         </receiver>
+
+        <activity android:name=".activity.DocumentActivity">
+        </activity>
     </application>
 
 </manifest>

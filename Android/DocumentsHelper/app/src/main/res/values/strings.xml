@@ -28,4 +28,6 @@
     <string name="pref_show_job_progress">Show Job Progress</string>
     <string name="go_to_print">Pick file...</string>
     <string name="upload_file_progress">Uploading file...</string>
+    <string name="item_parts_pages">From page %1$s to page %2$s</string>
+    <string name="documents_activity_print">Print</string>
 </resources>

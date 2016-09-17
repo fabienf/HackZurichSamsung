@@ -8,13 +8,16 @@
             android:key="pref_filename"
             android:title="@string/pref_filename"
             android:dialogTitle="@string/pref_filename"
-            android:inputType="textNoSuggestions"/>
+            android:inputType="textNoSuggestions"
+            android:enabled="false"
+            />
         
         <com.hackzurich.documentshelper.fragments.EditTextIntegerPreference
             android:key="pref_copies"
             android:title="@string/pref_copies"
             android:defaultValue="1"
-            android:dialogTitle="@string/pref_copies" />
+            android:dialogTitle="@string/pref_copies"
+            />
 
         <ListPreference
             android:key="pref_colorMode"
@@ -30,7 +33,8 @@
             android:dialogTitle="@string/pref_duplex_mode"
             android:entries="@array/pref_DuplexMode_entries"
             android:entryValues="@array/pref_DuplexMode_entries"
-            android:defaultValue="@string/pref_DuplexMode_default" />
+            android:defaultValue="@string/pref_DuplexMode_default"
+            />
         
         <ListPreference
             android:key="pref_autoFit"

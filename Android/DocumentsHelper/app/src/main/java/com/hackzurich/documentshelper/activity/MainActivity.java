@@ -12,13 +12,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.hackzurich.documentshelper.R;
 import com.hackzurich.documentshelper.model.Document;
 import com.hackzurich.documentshelper.network.ServiceClient;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -39,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int FILE_SELECT_CODE = 1;
 
+    public static final String DOCUMENT_KEY = "DocumentKey";
+
     private ProgressDialog mProgressDialog;
 
     @Override
@@ -51,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showFileChooser();
+
+//                Intent intent = new Intent(MainActivity.this, PrintActivity.class);
+//                startActivity(intent);
             }
         });
     }
@@ -88,10 +92,15 @@ public class MainActivity extends AppCompatActivity {
                             .subscribe(new Action1<Document>() {
                                 @Override
                                 public void call(Document document) {
-                                    // TODO Save document response here
                                     mProgressDialog.dismiss();
 
-                                    startActivity(new Intent(MainActivity.this, PrintActivity.class));
+                                    // serialize the response and transfer to the next activity
+                                    Gson gson = new Gson();
+                                    String documentJson = gson.toJson(document);
+                                    Intent intent = new Intent(MainActivity.this, DocumentActivity.class);
+                                    intent.putExtra(DOCUMENT_KEY, documentJson);
+
+                                    startActivity(intent);
                                 }
                             }, new Action1<Throwable>() {
                                 @Override
@@ -176,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
                     displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
                 }
             } finally {
-                if(cursor != null) {
+                if (cursor != null) {
                     cursor.close();
                 }
             }

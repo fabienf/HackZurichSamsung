@@ -1,0 +1,39 @@
+Required REST:
+
+1. Upload file
+  - Request: upload file
+  - Response: 
+
+  ```javascript
+  {
+    "file":"terms_and_conditions.pdf",
+    "type":"manual",
+    "parts":
+    [
+      {
+        "name":"grand of rights",
+        "description":"You and your Authorized Users ...",
+        "pages":[1,3],
+        "keys":["rights", "respect", "restrictions"]
+      },
+      {
+        "name":"access to services",
+        "description":"Only your employees, temporary employees, students, ...",
+        "pages":[4,19],
+        "keys":["employees", "subject", "online services", "materials"]
+      },
+      {
+        "name":"limited warranty",
+        "description":"Represents and warrants that it has the right and authority to make ...",
+        "pages":[19,42],
+        "keys":["warranty", "party", "expert", "exclusive"]
+      },
+      {
+        "name":"miscellaneous",
+        "description":"Charges and payment terms may be changed in accordance...",
+        "pages":[42,48],
+        "keys":["payment", "changed", "terminate", "communications", "authorized users"]
+      }
+    ]
+  }
+  ```

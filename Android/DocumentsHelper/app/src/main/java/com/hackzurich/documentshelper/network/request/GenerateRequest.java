@@ -12,19 +12,19 @@ public class GenerateRequest {
     @SerializedName("id")
     private String mId;
 
-    @SerializedName("parts")
-    private List<String> mParts;
+    @SerializedName("pages")
+    private List<List<Integer>> mPages;
 
-    public GenerateRequest(String id, List<String> parts) {
+    public GenerateRequest(String id, List<List<Integer>> pages) {
         mId = id;
-        mParts = parts;
+        mPages = pages;
     }
 
     public String getId() {
         return mId;
     }
 
-    public List<String> getParts() {
-        return mParts;
+    public List<List<Integer>> getPages() {
+        return mPages;
     }
 }

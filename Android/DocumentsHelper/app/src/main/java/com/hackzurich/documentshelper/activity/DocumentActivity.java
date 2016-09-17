@@ -96,12 +96,12 @@ public class DocumentActivity extends AppCompatActivity {
     private void generateDocument() {
         mProgressDialog = ProgressDialog.show(this, "", getString(R.string.generate_file_loading));
 
-        List<String> parts = new ArrayList<>();
+        List<List<Integer>> pages = new ArrayList<>();
         for (Part part : mSelectedForPrinting) {
-            parts.add(part.getId());
+            pages.add(part.getPages());
         }
 
-        GenerateRequest request = new GenerateRequest(mActiveDocument.getId(), parts);
+        GenerateRequest request = new GenerateRequest(mActiveDocument.getId(), pages);
         ServiceApi serviceApi = ServiceClient.getInstance().getServiceApi();
         serviceApi.generate(request)
                 .subscribeOn(Schedulers.newThread())

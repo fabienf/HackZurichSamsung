@@ -54,8 +54,8 @@ public class DocumentListAdapter extends RecyclerView.Adapter<DocumentListAdapte
             String key = current.getKeys().get(i);
             builder.append(key);
 
-            if(i > current.getKeys().size() - 1) {
-                builder.append(",");
+            if(i < (current.getKeys().size() - 1)) {
+                builder.append(", ");
             }
         }
         holder.mKeywords.setText(builder.toString());

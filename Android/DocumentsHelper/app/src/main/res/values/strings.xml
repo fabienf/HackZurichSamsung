@@ -26,5 +26,5 @@
     <string name="select_printer">Select Device</string>
     <string name="print_not_supported">Print is not supported on this device.</string>
     <string name="pref_show_job_progress">Show Job Progress</string>
-    <string name="go_to_print">Go to print</string>
+    <string name="go_to_print">Pick file...</string>
 </resources>

@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class ServiceClient {
 
-    private static final String ENDPOINT = "http://someserver.org";
+    private static final String ENDPOINT = "http://hackzurich16.eu-gb.mybluemix.net";
 
     private static ServiceClient mClient;
 

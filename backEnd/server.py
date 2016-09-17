@@ -7,25 +7,21 @@ import sys
 import pprint
 
 app = Flask(__name__)
+app.debug = True
 pp = pprint.PrettyPrinter(depth=6)
 port = int(os.getenv('VCAP_APP_PORT', 8080))
 
 json_file = ''
 
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def hello_world():
-	tx = PDF.get_text()
-	text = pp.pformat(tx)
 
-	    print(sys.version)
-    print('Hello World! I am running on port ' + str(port))
-
-    filename = './test/data/tablet.pdf'
-    pdf = PDF(filename)
-    result = pdf.get_summarised_data()
-    pretty_text = pp.pformat(result)
-    return (pretty_text)
+	filename = './test/data/tablet.pdf'
+	pdf = PDF(filename)
+	result = pdf.get_summarised_data()
+	pretty_text = pp.pformat(result)
+	return (pretty_text)
 
 def save_file():
 	if 'file' not in request.files:
@@ -41,8 +37,6 @@ def save_file():
 	print(file.filename)
 	file.save(file.filename)
 	return None
-
-
 
 
 @app.route('/upload', methods=['POST'])

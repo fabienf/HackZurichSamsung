@@ -2,8 +2,8 @@ from flask import Flask, request, redirect, url_for, json, render_template, json
 from lib.pdf import PDF
 from lib.miner import Miner
 
-from DocumentUnderstanding import DocumentUnderstanding as DU
-from DropboxUpdate import DropboxUpdate
+from lib.DocumentUnderstanding import DocumentUnderstanding as DU
+from lib.DropboxUpdate import DropboxUpdate
 import pickle
 import os
 import uuid

@@ -49,6 +49,6 @@ class DropboxUpdate:
         print "File moved sucesfully"
 
 
-DropboxUpdate.cluster_all_files()
+#DropboxUpdate.cluster_all_files()
 
 

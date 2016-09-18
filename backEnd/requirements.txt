@@ -5,4 +5,3 @@ watson_developer_cloud==0.19.0
 ipython==5.1.0
 pdfminer==20140328
 PyPDF2
-pickle

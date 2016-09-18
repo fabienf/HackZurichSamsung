@@ -3,6 +3,7 @@ from lib.pdf import PDF
 from lib.miner import Miner
 
 from DocumentUnderstanding import DocumentUnderstanding as DU
+from DropboxUpdate import DropboxUpdate
 import pickle
 import os
 import uuid
@@ -89,7 +90,7 @@ def upload_file():
             return jsonify(process_file_data(
                 file_name=file_path,
                 file_data=json_file,
-                file_uuid=file_uuid
+                file_uuid="test"
             ))
 
 
@@ -114,6 +115,11 @@ def split_file():
     directory_path, file_name = Miner.extract_pages(pdf_path=file_path, ranges=ranges)
 
     return send_from_directory(directory=directory_path, filename=file_name)
+
+@app.route('/dropbox', methods=['GET'])
+def cluser_files():
+    DropboxUpdate.cluster_all_files()
+    return "success"
 
 
 if __name__ == '__main__':

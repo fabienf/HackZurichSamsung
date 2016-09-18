@@ -2,6 +2,7 @@ package com.hackzurich.documentshelper.network;
 
 
 import com.hackzurich.documentshelper.model.Document;
+import com.hackzurich.documentshelper.network.request.CheckRequest;
 import com.hackzurich.documentshelper.network.request.GenerateRequest;
 
 import okhttp3.MultipartBody;
@@ -25,5 +26,8 @@ public interface ServiceApi {
     @POST("/range")
     @Streaming
     Observable<ResponseBody> generate(@Body GenerateRequest request);
+
+    @POST("/check")
+    Observable<Document> check(@Body CheckRequest request);
 
 }

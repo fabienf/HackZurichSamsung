@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.OpenableColumns;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -16,7 +17,9 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.hackzurich.documentshelper.R;
 import com.hackzurich.documentshelper.model.Document;
+import com.hackzurich.documentshelper.network.ServiceApi;
 import com.hackzurich.documentshelper.network.ServiceClient;
+import com.hackzurich.documentshelper.network.request.CheckRequest;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,6 +33,7 @@ import okhttp3.RequestBody;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
@@ -83,10 +87,25 @@ public class MainActivity extends AppCompatActivity {
                     mProgressDialog = ProgressDialog.show(this, "", getString(R.string.upload_file_progress));
 
                     // Get the Uri of the selected file
-                    Uri uri = data.getData();
+                    final Uri uri = data.getData();
 
-                    uploadFile(uri)
+                    String filename = getDisplayName(uri);
+                    CheckRequest checkRequest = new CheckRequest(filename);
+
+                    ServiceApi serviceApi = ServiceClient.getInstance().getServiceApi();
+                    serviceApi.check(checkRequest)
                             .subscribeOn(Schedulers.newThread())
+                            .observeOn(Schedulers.newThread())
+                            .flatMap(new Func1<Document, Observable<Document>>() {
+                                @Override
+                                public Observable<Document> call(Document document) {
+                                    if(!TextUtils.isEmpty(document.getFile())) {
+                                        return Observable.just(document);
+                                    } else {
+                                        return uploadFile(uri);
+                                    }
+                                }
+                            })
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Action1<Document>() {
                                 @Override
@@ -108,6 +127,30 @@ public class MainActivity extends AppCompatActivity {
                                     Toast.makeText(MainActivity.this, "Fail: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             });
+
+//                    uploadFile(uri)
+//                            .subscribeOn(Schedulers.newThread())
+//                            .observeOn(AndroidSchedulers.mainThread())
+//                            .subscribe(new Action1<Document>() {
+//                                @Override
+//                                public void call(Document document) {
+//                                    mProgressDialog.dismiss();
+//
+//                                    // serialize the response and transfer to the next activity
+//                                    Gson gson = new Gson();
+//                                    String documentJson = gson.toJson(document);
+//                                    Intent intent = new Intent(MainActivity.this, DocumentActivity.class);
+//                                    intent.putExtra(DOCUMENT_KEY, documentJson);
+//
+//                                    startActivity(intent);
+//                                }
+//                            }, new Action1<Throwable>() {
+//                                @Override
+//                                public void call(Throwable throwable) {
+//                                    mProgressDialog.dismiss();
+//                                    Toast.makeText(MainActivity.this, "Fail: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+//                                }
+//                            });
 
                 }
                 break;

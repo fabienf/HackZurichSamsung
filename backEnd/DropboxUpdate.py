@@ -11,15 +11,6 @@ class DropboxUpdate:
         #sign in
         dbx = dropbox.Dropbox('F2_PGWfw-GAAAAAAAAAACqNZoyJNzdLMd7x-BKLsGSE7hHM07KRMfT6jJgtWLgub')
         #debug info
-        #print dbx.users_get_current_account()
-
-        #
-        try:
-            dbx.files_create_folder('/dog')
-        except :
-            pass
-        #dbx.files_move('/HamesIM.pdf','/dog/HamesIM.pdf')
-
 
         newFileMeta = None
 
@@ -38,14 +29,32 @@ class DropboxUpdate:
         taxonomy = DU.get_single_best_taxonomy_for_text(text)
         #print keywords
         print taxonomy
-        folder_names = {'/law, govt and politics' : 'Law Govt and Politics', '/science' : 'Science', '/business and industrial' : 'Business and Industrial'}
-        print folder_names[taxonomy]
+        folder_names = {'/law, govt and politics' : 'Law Govt and Politics',
+            '/science' : 'Science',
+            '/business and industrial' : 'Business and Industrial',
+            '/art and entertainment' : 'Art and Entertainment',
+            '/education' : 'Education',
+            '/finance' : 'Finance',
+            '/hobbies and interests' : 'Hobbies and Interests',
+            '/news' : 'News',
+            '/sports' : 'Sports',
+            '/technology and computing' : 'Technology and Computing',
+            '/health and fitness' : "Health and Fitness",
+            '/travel' : 'Travel'
+            }
         #try to create a folder
+        folder_name = '/' + taxonomy.split('/')[1]
+        print folder_name
+        if folder_name in folder_names:
+            folder_name = folder_names[folder_name]
+        else:
+            folder_name = folder_name.split('/')[1]
+
         try:
-            dbx.files_create_folder('/'+folder_names[taxonomy])
+            dbx.files_create_folder('/'+folder_name)
         except :
             pass
-        dbx.files_move('/'+file_name,'/'+folder_names[taxonomy]+'/'+file_name)
+        dbx.files_move('/'+file_name,'/'+folder_name+'/'+file_name)
         print "File moved sucesfully"
 
 

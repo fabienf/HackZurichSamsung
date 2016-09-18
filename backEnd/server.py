@@ -15,7 +15,7 @@ pp = pprint.PrettyPrinter(depth=6)
 port = int(os.getenv('VCAP_APP_PORT', 8080))
 
 stored_files = {
-    'test': './tmp/HamesIM.pdf'
+    'test': './tmp/tablet.pdf'
 }
 
 
@@ -76,22 +76,13 @@ def upload_file():
 
     # file_path = 'test/data/tablet.pdf'
 
-    if 'tablet.pdf' in file_path:
-        pdf = PDF('./' + file_path)
-        result = pdf.get_summarised_data()
-        return jsonify(process_file_data(
-            file_name=file_path,
-            file_data=result,
-            file_uuid=file_uuid
-        ))
-    else:
-        with open('./test/test.pickle', 'rb') as f:
-            json_file = pickle.load(f)
-            return jsonify(process_file_data(
-                file_name=file_path,
-                file_data=json_file,
-                file_uuid="test"
-            ))
+    pdf = PDF('./' + file_path)
+    result = pdf.get_summarised_data()
+    return jsonify(process_file_data(
+        file_name=file_path,
+        file_data=result,
+        file_uuid=file_uuid
+    ))
 
 
             # with open('return_data.json') as data_file:

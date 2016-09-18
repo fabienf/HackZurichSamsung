@@ -60,7 +60,8 @@ public class DocumentActivity extends AppCompatActivity {
         Gson gson = new Gson();
         mActiveDocument = gson.fromJson(document, Document.class);
 
-        setTitle(mActiveDocument.getFile());
+        String filename = getFilename(mActiveDocument);
+        setTitle(filename);
 
         final Button printButton = (Button) findViewById(R.id.documents_activity_print_btn);
         printButton.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +94,14 @@ public class DocumentActivity extends AppCompatActivity {
 
     }
 
+    private String getFilename(Document document) {
+        String filename = document.getFile();
+        int index = filename.lastIndexOf("/");
+        if(index >= 0) {
+            filename = document.getFile().substring(index + 1);
+        }
+        return filename;
+    }
 
     private void generateDocument() {
         mProgressDialog = ProgressDialog.show(this, "", getString(R.string.generate_file_loading));
@@ -139,7 +148,8 @@ public class DocumentActivity extends AppCompatActivity {
                 folder.mkdir();
             }
 
-            File file = new File(folder.getPath() + "/" + FILENAME);
+            String filename = getFilename(mActiveDocument);
+            File file = new File(folder.getPath() + "/" + filename);
 
             InputStream inputStream = null;
             OutputStream outputStream = null;

@@ -67,9 +67,16 @@ public class DocumentListAdapter extends RecyclerView.Adapter<DocumentListAdapte
         }
         holder.mKeywords.setText(builder.toString());
 
+        //in some cases, it will prevent unwanted situations
+        holder.mNameCheckbox.setOnCheckedChangeListener(null);
+
+        //if true, your checkbox will be selected, else unselected
+        holder.mNameCheckbox.setChecked(current.isSelected());
+
         holder.mNameCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                current.setSelected(b);
                 mListener.onPartChecked(current, b);
             }
         });

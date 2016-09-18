@@ -1,5 +1,6 @@
 package com.hackzurich.documentshelper.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -24,6 +25,9 @@ public class Part {
     @SerializedName("keys")
     private List<String> mKeys;
 
+    @Expose
+    private boolean mSelected;
+
     public String getName() {
         return mName;
     }
@@ -42,5 +46,13 @@ public class Part {
 
     public String getId() {
         return mId;
+    }
+
+    public boolean isSelected() {
+        return mSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        mSelected = selected;
     }
 }

@@ -2,8 +2,8 @@ from flask import Flask, request, redirect, url_for, json, render_template, json
 from lib.pdf import PDF
 from lib.miner import Miner
 
-from DocumentUnderstanding import DocumentUnderstanding as DU
-from DropboxUpdate import DropboxUpdate
+from lib.DocumentUnderstanding import DocumentUnderstanding as DU
+from lib.DropboxUpdate import DropboxUpdate
 import pickle
 import os
 import uuid
@@ -15,7 +15,11 @@ pp = pprint.PrettyPrinter(depth=6)
 port = int(os.getenv('VCAP_APP_PORT', 8080))
 
 stored_files = {
-    'test': './tmp/tablet.pdf'
+    'test': './tmp/HamesIM.pdf',
+    'wto': './data/wto.pdf',
+    'dd': './data/dd.pdf',
+    'tablet': './data/tablet.pdf',
+    'hpstone': './data/hpstone.pdf'
 }
 
 
@@ -65,6 +69,29 @@ def process_file_data(file_name, file_data, file_uuid):
         'file': file_name,
         'parts': data_out_parts
     }
+
+@app.route('/check', methods=['POST'])
+def check_file():
+    content = request.get_json()
+    filename = content['filename']
+
+    root = filename.lower().split('.pdf')[0]
+    file_path = None
+    for key in stored_files.keys():
+        if key.lower() == root:
+            file_path = (key, stored_files[key])
+            break
+
+    if not file_path:
+        return "None"
+
+    pdf = PDF(file_path[1])
+    result = pdf.get_summarised_data()
+    return jsonify(process_file_data(
+        file_name=filename,
+        file_data=result,
+        file_uuid=file_path[0]
+    ))
 
 
 @app.route('/upload', methods=['POST'])

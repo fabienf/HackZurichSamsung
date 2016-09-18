@@ -6,6 +6,7 @@ from cStringIO import StringIO
 from pdfminer.pdfparser import PDFParser
 from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfpage import PDFPage
+from mypdfminer import PDFPage as MyPDFPage
 from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
@@ -30,7 +31,7 @@ class Miner:
                 'ref': stringified_ref
             })
 
-        return toc
+        return toc, document
 
     @staticmethod
     def get_pages(pdf_path, pagenums):
@@ -53,6 +54,14 @@ class Miner:
         output.close()
 
         return texts
+
+    @staticmethod
+    def get_page_objids(pdf_path):
+        infile = open(pdf_path, 'rb')
+        d = {}
+        for objid, pageno in MyPDFPage.get_pages(infile, [set()]):
+            d[objid] = pageno
+        return d
 
     @staticmethod
     def get_text(pdf_path):

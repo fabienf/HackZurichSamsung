@@ -19,23 +19,19 @@ class PDF:
             return toc
 
     def get_toc(self):
-        toc = Miner.get_toc(self.filename)
-        return toc
+        toc, document = Miner.get_toc(self.filename)
+        return toc, document
 
     def get_level(self, toc, level):
         toc_level = [x for x in toc if x['level'] == level]
         return toc_level
 
-    def clean_toc(self, toc):
-        cleaned = [x for x in toc if x['ref'] and str(x['ref']['D'])[1:].isdigit()]
-        return cleaned
-
     def add_range(self, toc):
         new_toc = deepcopy(toc)
         for i in range(len(new_toc)):
             new_toc[i]['range'] = {
-                'from': int(new_toc[i]['ref']['D'][1:]),
-                'to': int(new_toc[i + 1]['ref']['D'][1:]) if (i + 1 < len(new_toc)) else 9999
+                'from': int(new_toc[i]['ref']['D']),
+                'to': int(new_toc[i + 1]['ref']['D']) if (i + 1 < len(new_toc)) else 9999
             }
 
         return new_toc
@@ -58,12 +54,49 @@ class PDF:
 
         return new_toc
 
+    def pagify(self, toc, pages):
+        def find_page(d):
+            if str(d[1:]).isdigit():
+                return int(d[1:])
+
+            if 'PDFObjRef' in str(d):
+                suffix = str(d).split('PDFObjRef')[1]
+                m = re.search("\d+", suffix)
+                objid = int(m.group())
+                return pages[objid]
+
+            return None
+
+        new_toc = []
+
+        for i in xrange(len(toc)):
+            page = find_page(toc[i]['ref']['D'])
+            if page:
+                new_obj = deepcopy(toc[i])
+                new_obj['ref']['D'] = page
+                new_toc.append(new_obj)
+
+        return new_toc
+
     def get_summarised_data(self):
-        toc = self.get_toc()
+        print('Analysing data...')
+        pages = Miner.get_page_objids(pdf_path=self.filename)
+        print('[1/6]')
+        toc, document = self.get_toc()
+        print('[2/6]')
         toc_level = self.get_level(toc=toc, level=1)
-        toc_level = self.clean_toc(toc_level)
-        toc_level_ranged = self.add_range(toc_level)
+        print('[3/6]')
+
+        # from IPython import embed
+        # embed()
+        # sys.exit()
+
+        toc_level_pages = self.pagify(toc_level, pages)
+        print('[4/6]')
+        toc_level_ranged = self.add_range(toc_level_pages)
+        print('[5/6]')
         final_toc = self.add_content(toc_level_ranged)
+        print('[6/6]')
 
         return final_toc
 
@@ -76,5 +109,4 @@ if __name__ == "__main__":
     data = pdf.get_summarised_data()
 
     from IPython import embed
-
     embed()

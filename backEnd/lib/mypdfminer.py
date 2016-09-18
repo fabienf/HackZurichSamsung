@@ -1,7 +1,5 @@
-#!/usr/bin/env python
 import logging
 from pdfminer.psparser import LIT
-from pdfminer.pdftypes import PDFObjectNotFound
 from pdfminer.pdftypes import resolve1
 from pdfminer.pdftypes import int_value
 from pdfminer.pdftypes import list_value
@@ -9,9 +7,6 @@ from pdfminer.pdftypes import dict_value
 from pdfminer.pdfparser import PDFParser
 from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfdocument import PDFTextExtractionNotAllowed
-
-import sys
-from IPython import embed
 
 # some predefined literals and keywords.
 LITERAL_PAGE = LIT('Page')
@@ -21,36 +16,10 @@ pageno = 0
 result_pages = []
 
 
-##  PDFPage
-##
 class PDFPage(object):
-
-    """An object that holds the information about a page.
-    A PDFPage object is merely a convenience class that has a set
-    of keys and values, which describe the properties of a page
-    and point to its contents.
-    Attributes:
-      doc: a PDFDocument object.
-      pageid: any Python object that can uniquely identify the page.
-      attrs: a dictionary of page attributes.
-      contents: a list of PDFStream objects that represents the page content.
-      lastmod: the last modified time of the page.
-      resources: a list of resources used by the page.
-      mediabox: the physical size of the page.
-      cropbox: the crop rectangle of the page.
-      rotate: the page rotation (in degree).
-      annots: the page annotations.
-      beads: a chain that represents natural reading order.
-    """
-
     debug = False
 
     def __init__(self, doc, pageid, attrs):
-        """Initialize a page object.
-        doc: a PDFDocument object.
-        pageid: any Python object that can uniquely identify the page.
-        attrs: a dictionary of page attributes.
-        """
         self.doc = doc
         self.pageid = pageid
         self.attrs = dict_value(attrs)
@@ -61,7 +30,7 @@ class PDFPage(object):
             self.cropbox = resolve1(self.attrs['CropBox'])
         else:
             self.cropbox = self.mediabox
-        self.rotate = (int_value(self.attrs.get('Rotate', 0))+360) % 360
+        self.rotate = (int_value(self.attrs.get('Rotate', 0)) + 360) % 360
         self.annots = self.attrs.get('Annots')
         self.beads = self.attrs.get('B')
         if 'Contents' in self.attrs:
